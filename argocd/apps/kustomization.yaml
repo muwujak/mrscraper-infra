@@ -1,3 +1,5 @@
 resources:
 - keda/application.yaml
 - storage/application.yaml
+- monitoring/application.yaml
+- networking/application.yaml
