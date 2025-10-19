@@ -1,0 +1,3 @@
+resources:
+- advertisement.yaml
+- ipaddress-pool.yaml

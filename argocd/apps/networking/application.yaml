@@ -26,7 +26,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: networking-metallb
+  name: networking-metal-lb
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
@@ -37,6 +37,31 @@ spec:
   project: default
   source:
     path: argocd/apps/networking/metal-lb
+    repoURL: git@github.com:muwujak/mrscraper-infra.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      enable: true
+      selfHeal: true
+      prune: true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: networking-metal-lb-cr
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: networking
+    name: in-cluster
+  project: default
+  source:
+    path: argocd/apps/networking/metal-lb-cr
     repoURL: git@github.com:muwujak/mrscraper-infra.git
     targetRevision: HEAD
   syncPolicy:
