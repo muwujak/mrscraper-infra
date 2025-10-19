@@ -2,6 +2,54 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: networking-cert-manager
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: networking
+    name: in-cluster
+  project: default
+  source:
+    path: argocd/apps/networking/cert-manager
+    repoURL: git@github.com:muwujak/mrscraper-infra.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      enable: true
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: networking-cert-manager-cr
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: networking
+    name: in-cluster
+  project: default
+  source:
+    path: argocd/apps/networking/cert-manager-cr
+    repoURL: git@github.com:muwujak/mrscraper-infra.git
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      enable: true
+      selfHeal: true
+      prune: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
   name: networking-nginx-ingress
   namespace: argocd
   finalizers:
