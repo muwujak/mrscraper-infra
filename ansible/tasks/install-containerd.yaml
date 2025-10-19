@@ -1,0 +1,45 @@
+
+---
+- name: Check if containerd is installed
+  ansible.builtin.command: command -v containerd
+  register: containerd_check
+  failed_when: false
+  changed_when: false
+
+- name: Install containerd prerequisites
+  ansible.builtin.apt:
+    name:
+      - curl
+      - gpg
+      - gnupg
+      - software-properties-common
+      - apt-transport-https
+      - ca-certificates
+    state: present
+    update_cache: yes
+  when: containerd_check.rc != 0
+
+- name: Remove existing Docker GPG key
+  ansible.builtin.file:
+    path: /etc/apt/trusted.gpg.d/docker.gpg
+    state: absent
+  when: containerd_check.rc != 0
+
+- name: Add Docker GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    dest: /tmp/docker.gpg
+  when: containerd_check.rc != 0
+
+- name: De-armor Docker GPG key
+  ansible.builtin.command: gpg --dearmor -o /etc/apt/trusted.gpg.d/docker.gpg /tmp/docker.gpg
+  when: containerd_check.rc != 0
+
+- name: Install containerd
+  ansible.builtin.apt:
+    name: containerd.io
+    state: present
+    update_cache: yes
+  when: containerd_check.rc != 0
+  environment:
+    DEBIAN_FRONTEND: noninteractive

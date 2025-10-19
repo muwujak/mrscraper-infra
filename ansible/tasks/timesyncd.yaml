@@ -1,0 +1,21 @@
+---
+- name: install linux ntp
+  ansible.builtin.package:
+    name: ntp
+    state: present
+    
+- name: Ensure Indonesian NTP server is added as a fallback in timesyncd configuration
+  ansible.builtin.lineinfile:
+    path: /etc/systemd/timesyncd.conf
+    regexp: '^FallbackNTP='
+    line: 'FallbackNTP=id.pool.ntp.org'
+    insertafter: '^\[Time\]'
+    state: present
+    backup: yes
+  notify: Restart systemd-timesyncd
+
+- name: Ensure systemd-timesyncd service is enabled and started
+  ansible.builtin.systemd:
+    name: ntp
+    state: restarted
+    enabled: yes

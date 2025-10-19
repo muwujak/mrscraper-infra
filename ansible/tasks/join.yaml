@@ -1,0 +1,12 @@
+---
+- name: join
+  hosts: all
+  become: true
+  gather_facts: true
+  
+  vars:
+    shutdown_timeout: 60
+    
+  tasks:
+    - name: join
+      shell: kubeadm join 192.168.52.10:6443 --token d6btvv.opvcpm4z3rwwdutf --discovery-token-ca-cert-hash sha256:06d98a90a5d8184088cbf141d05e4cf013030f9b1c104237a6f9dc14826e7e3f

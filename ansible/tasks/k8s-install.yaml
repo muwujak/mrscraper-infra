@@ -1,0 +1,40 @@
+---
+- name: Install Kubernetes prerequisites
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+
+- name: Remove existing Kubernetes GPG key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    state: absent
+
+- name: Add Kubernetes GPG key
+  ansible.builtin.get_url:
+    url: https://pkgs.k8s.io/core:/stable:/v{{ package_version }}/deb/Release.key
+    dest: /tmp/kubernetes.gpg
+
+- name: De-armor Kubernetes GPG key
+  ansible.builtin.command: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /tmp/kubernetes.gpg
+
+- name: Add Kubernetes APT repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v{{ package_version }}/deb/ /"
+    state: present
+
+- name: Install Kubernetes components
+  ansible.builtin.apt:
+    name:
+      - kubelet={{ k8s_version }}-1.1
+      - kubeadm={{ k8s_version }}-1.1
+      - kubectl={{ k8s_version }}-1.1
+    state: present
+    update_cache: yes
+  environment:
+    DEBIAN_FRONTEND: noninteractive

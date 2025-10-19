@@ -1,0 +1,30 @@
+
+---
+- name: Install and configure Kubernetes cluster
+  hosts: all
+  become: yes
+  vars:
+    k8s_version: "{{ k8s_version }}"
+    package_version: "{{ k8s_version | regex_replace('\\.[0-9]+$', '') }}"
+
+  tasks:
+    - name: Disable swap
+      ansible.builtin.include_tasks: tasks/disable-swap.yaml
+
+    - name: Load kernel modules
+      ansible.builtin.include_tasks: tasks/load-kernel-modules.yaml
+
+    - name: Configure networking
+      ansible.builtin.include_tasks: tasks/network.yaml
+
+    - name: Install containerd
+      ansible.builtin.include_tasks: tasks/install-containerd.yaml
+
+    - name: Configure containerd
+      ansible.builtin.include_tasks: tasks/config-containerd.yaml
+
+    - name: Configure timesyncd
+      ansible.builtin.include_tasks: tasks/timesyncd.yaml
+
+    - name: Install Kubernetes components
+      ansible.builtin.include_tasks: tasks/k8s-install.yaml
