@@ -27,9 +27,9 @@ spec:
     helm:
       values: |
         config:
-          lokiAddress: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+          lokiAddress: http://release-loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
           clients:
-          - url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+          - url: http://release-loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
           snippets:
             pipelineStages:
             - cri: {}
