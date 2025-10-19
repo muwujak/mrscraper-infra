@@ -2,4 +2,5 @@ resources:
 - deployment.yaml
 - ingress.yaml
 - prometheusRule.yaml
+- scaledobject.yaml
 - svc.yaml
