@@ -12,5 +12,5 @@ spec:
   project: default
   source:
     path: argocd/apps/keda
-    repoURL: https://github.com/muwujak/mrscraper-infra
+    repoURL: git@github.com:muwujak/mrscraper-infra.git
     targetRevision: HEAD
