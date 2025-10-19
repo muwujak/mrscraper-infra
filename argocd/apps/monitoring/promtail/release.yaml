@@ -1,0 +1,39 @@
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: release-promtail
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true 
+    automated:
+      enable: true
+      selfHeal: true
+      prune: true
+  source:
+    chart: promtail
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 6.15.5
+    helm:
+      values: |
+        config:
+          lokiAddress: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+          clients:
+          - url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
+            snippets:
+              pipelineStages:
+              - cri: {}
+              - drop:
+                  source:     "namespace"
+                  expression: "(argocd|monitoring|kube-system|storage)"
+
