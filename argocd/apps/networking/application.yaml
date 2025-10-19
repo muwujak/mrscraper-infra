@@ -36,7 +36,7 @@ spec:
     name: in-cluster
   project: default
   source:
-    path: argocd/apps/networking/metallb
+    path: argocd/apps/networking/metal-lb
     repoURL: git@github.com:muwujak/mrscraper-infra.git
     targetRevision: HEAD
   syncPolicy:
