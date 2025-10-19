@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/log-format-upstream: '{"time": "$time_iso8601", "remote_addr": "$remote_addr", "request": "$request", "status": "$status", "path": "$request_uri"}'
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   rules:
   - host: mrscraper.mujak.my.id
     http:
