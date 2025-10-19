@@ -21,7 +21,7 @@ spec:
   - type: loki
     metadata:
       serverAddress: http://release-loki.monitoring.svc.cluster.local:3100
-      query: 'sum(count_over_time({namespace="networking",component="controller"} | regexp `.*\] "(?P<method>\S+) (?P<path>\S+) (?P<protocol>\S+)"` | method="GET" | path !~ `(?i)\.(svg|ico|woff2|css|js|png|jpg|gif|ttf|otf|eot|map)$` [1m]))'
+      query: 'sum(count_over_time({namespace="networking",component="controller"} | regexp `.*\] "(?P<method>\S+) (?P<path>\S+) (?P<protocol>\S+)" (?P<status>\d+) \d+ "(?P<referrer>[^"]*)"` | method="GET" | path !~ `(?i)\.(svg|ico|woff2|css|js|png|jpg|gif|ttf|otf|eot|map)$` | referrer =~ `.*mrscraper\.mujak\.my\.id.*` [1m]))'
       threshold: "50"
       activationThreshold: "5"
   - type: prometheus
