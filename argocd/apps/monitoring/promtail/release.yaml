@@ -30,10 +30,9 @@ spec:
           lokiAddress: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
           clients:
           - url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
-            snippets:
-              pipelineStages:
-              - cri: {}
-              - drop:
-                  source:     "namespace"
-                  expression: "(argocd|monitoring|kube-system|storage)"
-
+          snippets:
+            pipelineStages:
+            - cri: {}
+            - drop:
+                source:     "namespace"
+                expression: "(argocd|monitoring|kube-system|storage)"
