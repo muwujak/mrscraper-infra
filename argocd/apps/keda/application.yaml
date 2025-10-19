@@ -11,6 +11,6 @@ spec:
     name: in-cluster
   project: default
   source:
-    path: argocd/apps/keda
+    path: argocd/apps/keda/app
     repoURL: git@github.com:muwujak/mrscraper-infra.git
     targetRevision: HEAD
