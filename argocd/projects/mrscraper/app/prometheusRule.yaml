@@ -1,0 +1,22 @@
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mrscraper-cpu-usage-alert
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: prometheus
+spec:
+  groups:
+  - name: mrscraper.cpu.alerts
+    rules:
+    - alert: HighCPUUsage
+      expr: 100 * rate(container_cpu_usage_seconds_total{namespace="mrscraper",pod=~".*web.*"}[5m]) / kube_pod_container_resource_requests{namespace="mrscraper",resource="cpu",pod=~".*web.*"} > 80
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High CPU Usage for mrscraper"
+        description: "CPU usage for mrscraper deployment exceeds 80% of requested CPU for {{ $value | printf \"%.2f\" }}% for 5 minutes."
+        runbook_url: "https://your-runbook-url"

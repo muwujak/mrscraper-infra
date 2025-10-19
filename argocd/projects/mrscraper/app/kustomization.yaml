@@ -1,4 +1,5 @@
 resources:
 - deployment.yaml
-- svc.yaml
 - ingress.yaml
+- prometheusRule.yaml
+- svc.yaml
