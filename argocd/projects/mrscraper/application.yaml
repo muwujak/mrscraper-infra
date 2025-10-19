@@ -11,6 +11,12 @@ spec:
     name: in-cluster
   project: default
   source:
-    path: argocd/apps/mrscraper
+    path: argocd/projects/mrscraper/app
     repoURL: git@github.com:muwujak/mrscraper-infra.git
     targetRevision: HEAD
+  syncPolicy:
+    automated:
+      enable: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
