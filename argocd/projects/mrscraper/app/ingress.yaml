@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: mrscraper
+  annotations:
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.ingress.kubernetes.io/log-format-upstream: '{"time": "$time_iso8601", "remote_addr": "$remote_addr", "request": "$request", "status": "$status", "path": "$request_uri"}'
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: mrscraper.mujak.my.id
+    http:
+      paths:
+      - path: /.*
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80
+  tls:
+  - hosts: 
+    - mrscraper.mujak.my.id
+    secretName: app

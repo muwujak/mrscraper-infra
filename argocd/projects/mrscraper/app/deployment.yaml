@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: mrscraper
+spec:
+  selector:
+    matchLabels:
+      app: web
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - 
+        resources:
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+        image: docker.io/irkimuzak/mrscraper:1.0.0
+        name: web
+        ports:
+        - containerPort: 3000
+          name: web
